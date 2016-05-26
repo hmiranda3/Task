@@ -21,7 +21,7 @@ class Stack {
     //Make a managed store context, a persistent store coordinator, and a plac to put it all in.
     
     static func setUpMainContext() -> NSManagedObjectContext {
-        let bundle = NSBundle.mainBundle() //Helps us acces where things are saved on the device and merge models into a bundle.
+        let bundle = NSBundle.mainBundle() //Helps us access where things are saved on the device and merge models into a bundle.
         guard let model = NSManagedObjectModel.mergedModelFromBundles([bundle])
             else { fatalError("model not found") }
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model) // takes model info an stores to persistent store.

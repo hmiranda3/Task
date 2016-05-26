@@ -9,9 +9,18 @@
 import UIKit
 
 class TaskDetailTableViewController: UITableViewController {
+    
+    var task: Task?
+    var dueDateValue: NSDate?
 
+    @IBOutlet weak var taskNameTextField: UITextField!
+    @IBOutlet weak var dueTextField: UITextField!
+    @IBOutlet weak var notesTextField: UITextView!
+    @IBOutlet var dueDatePicker: UIDatePicker!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        dueTextField.inputView = dueDatePicker
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -23,6 +32,13 @@ class TaskDetailTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateWith(task: Task) {
+        title = taskNameTextField.text
+        taskNameTextField.text = task.name
+        dueTextField.text = task.due?.stringValue()
+        notesTextField.text = task.notes
     }
 
     // MARK: - Table view data source
@@ -36,6 +52,29 @@ class TaskDetailTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 0
     }
+    
+    // MARK: - Action Buttons:
+    
+    @IBAction func userTappedView(sender: AnyObject) {
+        dueTextField.resignFirstResponder()
+        notesTextField.resignFirstResponder()
+        taskNameTextField.resignFirstResponder()
+    }
+    
+    @IBAction func datePickerValueChanged(sender: UIDatePicker) {
+        self.dueTextField.text = sender.date.stringValue()
+        self.dueDateValue = sender.date
+    }
+    
+    @IBAction func saveButtonTapped(sender: AnyObject) {
+        if let task = task {
+           TaskController.sharedController.updateTask(task, name: taskNameTextField.text ?? "", notes: notesTextField.text, due: NSDate?, isComplete: task.isComplete.boolValue)
+            // TODO: -Fix this ish!
+        } else {
+            TaskController.sharedController.addTask(taskNameTextField.text ?? "", notes: notesTextField.text, due: <#T##NSDate?#>)
+        }
+    }
+    
 
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

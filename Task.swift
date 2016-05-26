@@ -12,6 +12,14 @@ import CoreData
 @objc(Task)
 class Task: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
-
+    convenience init?(name: String, notes: String? = nil, due: NSDate? = nil, isComplete: Bool = false, context: NSManagedObjectContext = Stack.sharedStack.managedObjectContext) {
+        guard let entity = NSEntityDescription.entityForName("Task", inManagedObjectContext: context) else {return nil}
+        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        
+        self.name = name
+        self.notes = notes
+        self.due = due
+    
+    }
+    
 }
